@@ -41,7 +41,7 @@ public class ProductService implements IProductService{
             myProduct.setBrand(newProduct.getBrand());
             myProduct.setName(newProduct.getName());
             myProduct.setUnit_price(newProduct.getUnit_price());
-            productRepository.save(myProduct);
+            return productRepository.save(myProduct);
         }
         return null;
     }
