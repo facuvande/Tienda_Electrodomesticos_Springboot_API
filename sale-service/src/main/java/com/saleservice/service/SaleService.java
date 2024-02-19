@@ -5,6 +5,9 @@ import com.saleservice.dto.ProductSaleDTO;
 import com.saleservice.model.Sale;
 import com.saleservice.repository.CartAPI;
 import com.saleservice.repository.ISaleRepository;
+import com.thoughtworks.xstream.converters.time.LocalDateConverter;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +33,8 @@ public class SaleService implements ISaleService{
     }
 
     @Override
+    @CircuitBreaker(name = "cart-service", fallbackMethod = "fallbackGetProductsBySale")
+    @Retry(name="cart-service")
     public ProductSaleDTO getProductsBySale(Long id_sale) {
         Sale mySale = this.getSaleById(id_sale);
         List<ProductDTO> myProducts = cartApi.getProductsByCart(mySale.getId_cart());
@@ -44,6 +49,8 @@ public class SaleService implements ISaleService{
     }
 
     @Override
+    @CircuitBreaker(name = "cart-service", fallbackMethod = "fallbackGetAmmountBySale")
+    @Retry(name="cart-service")
     public Double getAmmountBySale(Long id_sale) {
         Sale mySale = this.getSaleById(id_sale);
         return cartApi.getAmmountBySale(mySale.getId_cart());
@@ -52,5 +59,13 @@ public class SaleService implements ISaleService{
     @Override
     public Sale createSale(Sale sale) {
         return saleRepository.save(sale);
+    }
+
+    public ProductSaleDTO fallbackGetProductsBySale(Throwable t){
+        return null;
+    }
+
+    public Double fallbackGetAmmountBySale(){
+        return null;
     }
 }
