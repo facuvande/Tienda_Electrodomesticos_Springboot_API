@@ -1,10 +1,8 @@
 package com.saleservice.controller;
 
-import com.saleservice.dto.ProductDTO;
 import com.saleservice.dto.ProductSaleDTO;
 import com.saleservice.model.Sale;
 import com.saleservice.service.ISaleService;
-import feign.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
