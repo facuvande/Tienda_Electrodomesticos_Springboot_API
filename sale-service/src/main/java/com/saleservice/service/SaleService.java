@@ -5,7 +5,6 @@ import com.saleservice.dto.ProductSaleDTO;
 import com.saleservice.model.Sale;
 import com.saleservice.repository.CartAPI;
 import com.saleservice.repository.ISaleRepository;
-import com.thoughtworks.xstream.converters.time.LocalDateConverter;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,7 @@ public class SaleService implements ISaleService{
         return saleRepository.save(sale);
     }
 
-    public ProductSaleDTO fallbackGetProductsBySale(Throwable t){
+    public ProductSaleDTO fallbackGetProductsBySale(){
         return null;
     }
 
