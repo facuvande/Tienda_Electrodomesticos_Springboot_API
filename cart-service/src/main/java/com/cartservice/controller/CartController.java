@@ -42,6 +42,4 @@ public class CartController {
         return cartService.deleteCartById(id_cart);
     }
 
-    
-
 }

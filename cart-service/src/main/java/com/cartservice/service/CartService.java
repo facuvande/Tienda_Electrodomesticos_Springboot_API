@@ -32,15 +32,4 @@ public class CartService implements ICartService{
         cartRepository.deleteById(id);
         return "Cart deleted";
     }
-
-    @Override
-    public Cart editCart(Long id, Cart newCart) {
-        Cart myCart = this.getCartById(id);
-        if(myCart != null) {
-            myCart.setTotal_price(newCart.getTotal_price());
-            myCart.setId_products(newCart.getId_products());
-            return cartRepository.save(myCart);
-        }
-        return null;
-    }
 }

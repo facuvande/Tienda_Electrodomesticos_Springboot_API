@@ -10,6 +10,5 @@ public interface ICartService {
     public Cart getCartById(Long id);
     public Cart createCart(Cart cart);
     public String deleteCartById(Long id);
-    public Cart editCart(Long id, Cart newCart);
 
 }
