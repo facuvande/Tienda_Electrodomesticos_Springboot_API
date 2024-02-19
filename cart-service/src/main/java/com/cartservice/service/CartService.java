@@ -4,9 +4,14 @@ import com.cartservice.dto.ProductDTO;
 import com.cartservice.model.Cart;
 import com.cartservice.repository.ICartRepository;
 import com.cartservice.repository.ProductAPI;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,12 +34,13 @@ public class CartService implements ICartService{
     }
 
     @Override
+    @CircuitBreaker(name = "products-service", fallbackMethod = "fallbackGetCartProducts")
+    @Retry(name="products-service")
     public List<ProductDTO> getProductsByCart(Long id_cart){
         Cart myCart = this.getCartById(id_cart);
         List<Long> productsId = myCart.getId_products();
 
         return productApi.getProductsById(productsId);
-
     }
 
     @Override
@@ -55,6 +61,8 @@ public class CartService implements ICartService{
     }
 
     @Override
+    @CircuitBreaker(name = "products-service", fallbackMethod = "fallbackAddProductsToCart")
+    @Retry(name="products-service")
     public Cart addProductToCart(Long id_product, Long id_cart) {
 
         Cart myCart = this.getCartById(id_cart);
@@ -72,6 +80,8 @@ public class CartService implements ICartService{
     }
 
     @Override
+    @CircuitBreaker(name = "products-service", fallbackMethod = "fallbackRemoveProductsToCart")
+    @Retry(name="products-service")
     public Cart removeProductToCart(Long id_product, Long id_cart) {
 
         Cart myCart = this.getCartById(id_cart);
@@ -90,4 +100,20 @@ public class CartService implements ICartService{
 
         return cartRepository.save(myCart);
     }
+
+    public List<ProductDTO> fallbackGetCartProducts(Throwable t){
+        List<ProductDTO> myList = new ArrayList<>();
+        ProductDTO myProductError = new ProductDTO(1111111L, t.getMessage() , "Error", 00000.0);
+        myList.add(myProductError);
+        return myList;
+    }
+
+    public Cart fallbackAddProductsToCart(Throwable t){
+        return null;
+    }
+
+    public Cart fallbackRemoveProductsToCart(Throwable t){
+        return null;
+    }
+
 }
