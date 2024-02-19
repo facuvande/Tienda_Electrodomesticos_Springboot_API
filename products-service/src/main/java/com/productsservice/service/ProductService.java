@@ -28,6 +28,7 @@ public class ProductService implements IProductService{
     public List<Product> getProductsById(List<Long> id_products) {
         List<Product> myList = new ArrayList<>();
         for(Long id_product : id_products){
+            System.out.println(id_product);
             Product product = this.getProductById(id_product);
             myList.add(product);
         }
