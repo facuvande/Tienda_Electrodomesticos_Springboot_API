@@ -29,6 +29,15 @@ public class CartService implements ICartService{
     }
 
     @Override
+    public List<ProductDTO> getProductsByCart(Long id_cart){
+        Cart myCart = this.getCartById(id_cart);
+        List<Long> productsId = myCart.getId_products();
+
+        return productApi.getProductsById(productsId);
+
+    }
+
+    @Override
     public Cart createCart(Cart cart) {
         return cartRepository.save(cart);
     }

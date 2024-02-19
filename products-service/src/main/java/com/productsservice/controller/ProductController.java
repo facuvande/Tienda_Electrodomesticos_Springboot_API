@@ -31,6 +31,12 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/details")
+    List<Product> getProductsById(@RequestParam List<Long> id_products){
+        return productService.getProductsById(id_products);
+    }
+
+
     @PostMapping("")
     public Product createProduct(@RequestBody Product product){
         return productService.createProduct(product);

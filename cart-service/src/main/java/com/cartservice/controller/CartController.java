@@ -1,5 +1,6 @@
 package com.cartservice.controller;
 
+import com.cartservice.dto.ProductDTO;
 import com.cartservice.model.Cart;
 import com.cartservice.service.CartService;
 import com.cartservice.service.ICartService;
@@ -34,6 +35,11 @@ public class CartController {
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cart not found");
         }
+    }
+
+    @GetMapping("/products/{id_cart}")
+    public List<ProductDTO> getProductsByCart(@PathVariable Long id_cart){
+        return cartService.getProductsByCart(id_cart);
     }
 
     @PostMapping("")
