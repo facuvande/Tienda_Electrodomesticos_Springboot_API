@@ -9,6 +9,7 @@ public interface ISaleService {
     public List<Sale> getSales();
     public Sale getSaleById(Long id);
     public ProductSaleDTO getProductsBySale(Long id_sale);
+    public Double getAmmountBySale(Long id_sale);
     public Sale createSale(Sale sale);
 
 }

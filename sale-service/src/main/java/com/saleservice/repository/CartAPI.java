@@ -13,4 +13,7 @@ public interface CartAPI {
     @GetMapping("/products/{id_cart}")
     public List<ProductDTO> getProductsByCart(@PathVariable Long id_cart);
 
+    @GetMapping("/{id_cart}/totalAmmount")
+    public Double getAmmountBySale(@PathVariable Long id_cart);
+
 }

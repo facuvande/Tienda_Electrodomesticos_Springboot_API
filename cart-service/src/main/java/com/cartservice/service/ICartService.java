@@ -10,6 +10,7 @@ public interface ICartService {
     public List<Cart> getCarts();
     public Cart getCartById(Long id);
     public List<ProductDTO> getProductsByCart(Long id_cart);
+    public Double getTotalByCart(Long id_cart);
     public Cart createCart(Cart cart);
     public String deleteCartById(Long id);
     public Cart addProductToCart(Long id_product, Long id_cart);

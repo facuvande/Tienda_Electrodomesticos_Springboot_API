@@ -39,6 +39,11 @@ public class SaleController {
         return saleService.getProductsBySale(id_sale);
     }
 
+    @GetMapping("/{id_sale}/total_price")
+    public Double getAmmountBySale(@PathVariable Long id_sale){
+        return saleService.getAmmountBySale(id_sale);
+    }
+
     @PostMapping("")
     public Sale createSale(@RequestBody Sale sale){
         return saleService.createSale(sale);

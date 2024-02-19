@@ -42,6 +42,11 @@ public class CartController {
         return cartService.getProductsByCart(id_cart);
     }
 
+    @GetMapping("/{id_cart}/totalAmmount")
+    public Double getTotalByCart(@PathVariable Long id_cart){
+        return cartService.getTotalByCart(id_cart);
+    }
+
     @PostMapping("")
     public Cart createCart(@RequestBody Cart cart){
         return cartService.createCart(cart);

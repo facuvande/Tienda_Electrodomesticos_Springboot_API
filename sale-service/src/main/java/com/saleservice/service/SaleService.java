@@ -44,6 +44,12 @@ public class SaleService implements ISaleService{
     }
 
     @Override
+    public Double getAmmountBySale(Long id_sale) {
+        Sale mySale = this.getSaleById(id_sale);
+        return cartApi.getAmmountBySale(mySale.getId_cart());
+    }
+
+    @Override
     public Sale createSale(Sale sale) {
         return saleRepository.save(sale);
     }

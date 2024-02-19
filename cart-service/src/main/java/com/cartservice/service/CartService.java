@@ -38,6 +38,12 @@ public class CartService implements ICartService{
     }
 
     @Override
+    public Double getTotalByCart(Long id_cart){
+        Cart myCart = this.getCartById(id_cart);
+        return myCart.getTotal_price();
+    }
+
+    @Override
     public Cart createCart(Cart cart) {
         return cartRepository.save(cart);
     }
