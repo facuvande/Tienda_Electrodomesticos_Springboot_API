@@ -43,11 +43,14 @@ public class CartService implements ICartService{
     public Cart addProductToCart(Long id_product, Long id_cart) {
 
         Cart myCart = this.getCartById(id_cart);
+        Double totalPriceCart = myCart.getTotal_price();
         ProductDTO myProduct = productApi.getProductById(id_product);
 
         List<Long> myList = myCart.getId_products();
         myList.add(myProduct.getId_product());
+        totalPriceCart = totalPriceCart + myProduct.getUnit_price();
         myCart.setId_products(myList);
+        myCart.setTotal_price(totalPriceCart);
 
         cartRepository.save(myCart);
         return myCart;
@@ -62,6 +65,9 @@ public class CartService implements ICartService{
             Long productId = myListProducts.get(i);
 
             if(productId.equals(id_product)){
+                ProductDTO myProduct = productApi.getProductById(id_product);
+
+                myCart.setTotal_price(myCart.getTotal_price() - myProduct.getUnit_price());
                 myListProducts.remove(i);
             }
         }
