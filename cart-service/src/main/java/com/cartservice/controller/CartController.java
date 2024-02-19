@@ -56,4 +56,14 @@ public class CartController {
         }
     }
 
+    @DeleteMapping("/{id_cart}/product/{id_product}")
+    public ResponseEntity<?> removeProductToCart(@PathVariable Long id_product, @PathVariable Long id_cart){
+        try{
+            return ResponseEntity.ok(cartService.removeProductToCart(id_product, id_cart));
+        }catch (FeignException e){
+            String errorMessage = "Product by id: " + id_product + " not found";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+        }
+    }
+
 }

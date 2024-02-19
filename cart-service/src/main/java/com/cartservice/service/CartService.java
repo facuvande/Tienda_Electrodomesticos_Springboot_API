@@ -38,21 +38,15 @@ public class CartService implements ICartService{
         cartRepository.deleteById(id);
         return "Cart deleted";
     }
-    
+
     @Override
     public Cart addProductToCart(Long id_product, Long id_cart) {
 
-        // Traemos carrito
         Cart myCart = this.getCartById(id_cart);
-
-        // Traemos Producto
         ProductDTO myProduct = productApi.getProductById(id_product);
 
-        // Traemos Lista de Productos del carrito actual
         List<Long> myList = myCart.getId_products();
         myList.add(myProduct.getId_product());
-
-        // Agregamos producto a carrito
         myCart.setId_products(myList);
 
         cartRepository.save(myCart);
@@ -60,7 +54,19 @@ public class CartService implements ICartService{
     }
 
     @Override
-    public Cart removeProductFromCart(Long id_product, Long id_cart) {
-        return null;
+    public Cart removeProductToCart(Long id_product, Long id_cart) {
+
+        Cart myCart = this.getCartById(id_cart);
+        List<Long> myListProducts = myCart.getId_products();
+        for(int i = myListProducts.size() - 1; i >= 0; i--){
+            Long productId = myListProducts.get(i);
+
+            if(productId.equals(id_product)){
+                myListProducts.remove(i);
+            }
+        }
+        myCart.setId_products(myListProducts);
+
+        return cartRepository.save(myCart);
     }
 }
