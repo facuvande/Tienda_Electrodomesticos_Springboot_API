@@ -32,8 +32,8 @@ services:
       - "integrador-network"
     environment:
       - DATABASE_URL=jdbc:mysql://integrador_db:3306/sv_products?createDatabaseIfNotExist=true&serverTimezone=UTC
-      - DATABASE_USERNAME= root
-      - DATABASE_PASSWORD= 181222root
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=181222root
     restart: always
     depends_on:
       - integrador_db
@@ -48,8 +48,8 @@ services:
       - "integrador-network"
     environment:
       - DATABASE_URL=jdbc:mysql://integrador_db:3306/sv_carts?createDatabaseIfNotExist=true&serverTimezone=UTC
-      - DATABASE_USERNAME= root
-      - DATABASE_PASSWORD= 181222root
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=181222root
     restart: always
     depends_on:
       - integrador_db
@@ -64,8 +64,8 @@ services:
       - "integrador-network"
     environment:
       - DATABASE_URL=jdbc:mysql://integrador_db:3306/sv_sales?createDatabaseIfNotExist=true&serverTimezone=UTC
-      - DATABASE_USERNAME= root
-      - DATABASE_PASSWORD= 181222root
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=181222root
     restart: always
     depends_on:
       - integrador_db
