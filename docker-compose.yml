@@ -2,40 +2,114 @@ version: '2.1'
 
 services:
   eureka-server:
-    build: eureka-sv
-    mem_limit: 512m
+    container_name: eureka-server
+    image: eureka-server:1.0.0
+    build:
+      context: ./eureka-sv
     ports:
       - "8761:8761"
+    restart: always
     networks:
-      - 'proyectofinal-network'
+      - "integrador-network"
   api-gateway:
-    build: api-gateway
-    mem_limit: 512m
+    container_name: api-gateway
+    image: api-gateway:1.0.0
+    build:
+      context: ./api-gateway
     ports:
       - "444:444"
     networks:
-      - 'proyectofinal-network'
-  cart-service:
-    build: cart-service
-    mem_limit: 512m
-    ports:
-      - "8082:8082"
-    networks:
-      - 'proyectofinal-network'
+      - "integrador-network"
+    restart: always
   products-service:
-    build: products-service
-    mem_limit: 512m
+    container_name: products-service
+    image: products-service:1.0.0
+    build:
+      context: ./products-service
     ports:
       - "8081:8081"
     networks:
-      - 'proyectofinal-network'
+      - "integrador-network"
+    environment:
+      - DATABASE_URL=jdbc:mysql://products_db:3306/sv_products?createDatabaseIfNotExist=true&serverTimezone=UTC
+      - DATABASE_USERNAME= root
+      - DATABASE_PASSWORD=
+    restart: always
+    depends_on:
+      - products_db
+  cart-service:
+    container_name: cart-service
+    image: cart-service:1.0.0
+    build:
+      context: ./cart-service
+    ports:
+      - "8082:8082"
+    networks:
+      - "integrador-network"
+    environment:
+      - DATABASE_URL=jdbc:mysql://cart_db:3306/sv_carts?createDatabaseIfNotExist=true&serverTimezone=UTC
+      - DATABASE_USERNAME= root
+      - DATABASE_PASSWORD=
+    restart: always
+    depends_on:
+      - cart_db
   sale-service:
-    build: sale-service
-    mem_limit: 512m
+    container_name: sale-service
+    image: sale-service:1.0.0
+    build:
+      context: ./sale-service
     ports:
       - "8083:8083"
     networks:
-      - 'proyectofinal-network'
+      - "integrador-network"
+    environment:
+      - DATABASE_URL=jdbc:mysql://sale_db:3306/sv_sales?createDatabaseIfNotExist=true&serverTimezone=UTC
+      - DATABASE_USERNAME= root
+      - DATABASE_PASSWORD=
+    restart: always
+    depends_on:
+      - sale_db
+  products_db:
+    container_name: products_db
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    networks:
+      - "integrador-network"
+    volumes:
+      - products_db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=TRUE
+      - MYSQL_DB=sv_products
+  cart_db:
+    container_name: cart_db
+    image: mysql:8.0
+    ports:
+      - "3309:3306"
+    networks:
+      - "integrador-network"
+    volumes:
+      - carts_db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=TRUE
+      - MYSQL_DB=sv_carts
+  sale_db:
+    container_name: sale_db
+    image: mysql:8.0
+    ports:
+      - "3308:3306"
+    networks:
+      - "integrador-network"
+    volumes:
+      - sales_db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=TRUE
+      - MYSQL_DB=sv_sales
+
+volumes:
+  products_db_data:
+  sales_db_data:
+  carts_db_data:
 
 networks:
-  proyectofinal-network:
+    integrador-network:
