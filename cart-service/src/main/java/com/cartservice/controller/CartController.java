@@ -60,7 +60,11 @@ public class CartController {
     @PostMapping("/{id_cart}/product/{id_product}")
     public ResponseEntity<?> addProductToCart(@PathVariable Long id_product, @PathVariable Long id_cart){
         try{
-            return ResponseEntity.ok(cartService.addProductToCart(id_product, id_cart));
+            Cart cart = cartService.addProductToCart(id_product, id_cart);
+            if(cart == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+            }
+            return ResponseEntity.ok(cart);
         }catch (FeignException e){
             String errorMessage = "Product by id: " + id_product + " not found";
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);

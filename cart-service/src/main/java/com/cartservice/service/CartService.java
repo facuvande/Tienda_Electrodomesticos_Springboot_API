@@ -69,6 +69,10 @@ public class CartService implements ICartService{
         Double totalPriceCart = myCart.getTotal_price();
         ProductDTO myProduct = productApi.getProductById(id_product);
 
+        if(myProduct == null){
+            return null;
+        }
+
         List<Long> myList = myCart.getId_products();
         myList.add(myProduct.getId_product());
         totalPriceCart = totalPriceCart + myProduct.getUnit_price();
